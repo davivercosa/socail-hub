@@ -16,6 +16,6 @@ AppDataSource.initialize()
       })
     );
 
-    app.listen(3000);
+    app.listen(3001);
   })
   .catch((error) => console.log(error));
