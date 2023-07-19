@@ -2,9 +2,11 @@ import { Router } from "express";
 import { Request, Response } from "express";
 import { iApiResponse } from "../shared/interfaces/response.interface";
 
+import AccountRoutes from "./account";
+
 const router = Router();
 
-const routes = [];
+const routes = [AccountRoutes];
 
 routes.forEach((obj) => {
   obj.routes.forEach((route) => {
@@ -18,16 +20,11 @@ routes.forEach((obj) => {
           next
         );
         result.then((result: iApiResponse) => {
-          if (result.status === "error") {
+          if (result.status === "error" || result.status === "success") {
             response.status(result.code);
 
             delete result.code;
 
-            response.json(result);
-
-            return;
-          } else if (result.status === "success") {
-            response.status(200);
             response.json(result);
 
             return;
