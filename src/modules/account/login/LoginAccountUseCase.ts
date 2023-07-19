@@ -1,4 +1,5 @@
 import { AppDataSource } from "../../../data-source";
+import { JwtManager } from "../../../utils/JwtManager";
 import { Account } from "../entitities/Account.entity";
 import {
   iLoginAccount,
@@ -44,11 +45,7 @@ export class LoginAccountUseCase {
         };
       }
 
-      return {
-        status: "success",
-        message: "Login successfully done!",
-        code: 200,
-      };
+      return new JwtManager().create(accountExist);
     } catch (error) {
       return {
         status: "error",
