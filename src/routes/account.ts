@@ -6,6 +6,9 @@ import { createAccountSchema } from "../modules/account/create/dtos/createAccoun
 import { LoginAccountController } from "../modules/account/login/LoginAccountController";
 import { loginAccountSchema } from "../modules/account/login/dtos/loginAccount.dtos";
 
+import { UpdateAccountController } from "../modules/account/update/UpdateAccountController";
+import { updateAccountSchema } from "../modules/account/update/dtos/updateAccount.dto";
+
 export default {
   path: "/account",
   routes: [
@@ -23,6 +26,14 @@ export default {
       controller: LoginAccountController,
       action: "handle",
       middlewares: [VerifyDTO(loginAccountSchema)],
+    },
+
+    {
+      method: "put",
+      route: "/",
+      controller: UpdateAccountController,
+      action: "handle",
+      middlewares: [VerifyDTO(updateAccountSchema)],
     },
   ],
 };
