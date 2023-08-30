@@ -12,11 +12,8 @@ export class UpdateAccountPasswordController {
   ): Promise<iUpdateAccountPasswordResponse> {
     const password = request.body as iUpdateAccountPassword;
 
-    const accountId = request.user.id;
+    const userId = request.user.id;
 
-    return await new UpdateAccountPasswordUseCase().resolve(
-      password,
-      accountId
-    );
+    return await new UpdateAccountPasswordUseCase().resolve(password, userId);
   }
 }

@@ -3,10 +3,11 @@ import { Request, Response } from "express";
 import { iApiResponse } from "../shared/interfaces/response.interface";
 
 import AccountRoutes from "./account";
+import FollowerRoutes from "./follower";
 
 const router = Router();
 
-const routes = [AccountRoutes];
+const routes = [AccountRoutes, FollowerRoutes];
 
 routes.forEach((obj) => {
   obj.routes.forEach((route) => {

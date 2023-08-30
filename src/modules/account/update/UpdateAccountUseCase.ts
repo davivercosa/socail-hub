@@ -11,11 +11,11 @@ export class UpdateAccountUseCase {
   ) {}
   async resolve(
     { username, phone, bio }: iUpdateAccount,
-    accountId: number
+    userId: number
   ): Promise<iUpdateAccountResponse> {
     try {
       const accountExist = await this.accountRepository.findOneBy({
-        id_account: accountId,
+        id_account: userId,
       });
 
       if (!accountExist) {
@@ -31,7 +31,7 @@ export class UpdateAccountUseCase {
           username,
         });
 
-        if (usernameExist && usernameExist.id_account !== accountId) {
+        if (usernameExist && usernameExist.id_account !== userId) {
           return {
             status: "error",
             message: "Username already in use. Please use a different one!",

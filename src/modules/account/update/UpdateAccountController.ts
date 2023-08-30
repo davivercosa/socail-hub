@@ -12,8 +12,8 @@ export class UpdateAccountController {
   ): Promise<iUpdateAccountResponse> {
     const accountInfo = request.body as iUpdateAccount;
 
-    const accountId = request.user.id;
+    const userId = request.user.id;
 
-    return await new UpdateAccountUseCase().resolve(accountInfo, accountId);
+    return await new UpdateAccountUseCase().resolve(accountInfo, userId);
   }
 }

@@ -13,11 +13,11 @@ export class UpdateAccountPasswordUseCase {
   ) {}
   async resolve(
     { password }: iUpdateAccountPassword,
-    accountId: number
+    userId: number
   ): Promise<iUpdateAccountPasswordResponse> {
     try {
       const accountExist = await this.accountRepository.findOneBy({
-        id_account: accountId,
+        id_account: userId,
       });
 
       if (!accountExist) {
