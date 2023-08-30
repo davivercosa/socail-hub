@@ -1,3 +1,4 @@
+import Authenticate from "../middlewares/Authenticate";
 import VerifyDTO from "../middlewares/Verify.DTO";
 
 import { CreateAccountController } from "../modules/account/create/CreateAccountController";
@@ -36,7 +37,7 @@ export default {
       route: "/",
       controller: UpdateAccountController,
       action: "handle",
-      middlewares: [VerifyDTO(updateAccountSchema)],
+      middlewares: [VerifyDTO(updateAccountSchema), Authenticate],
     },
 
     {

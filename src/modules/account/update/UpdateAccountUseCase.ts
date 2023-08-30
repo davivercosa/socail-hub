@@ -9,15 +9,13 @@ export class UpdateAccountUseCase {
   constructor(
     private accountRepository = AppDataSource.getRepository(Account)
   ) {}
-  async resolve({
-    id_account,
-    username,
-    phone,
-    bio,
-  }: iUpdateAccount): Promise<iUpdateAccountResponse> {
+  async resolve(
+    { username, phone, bio }: iUpdateAccount,
+    accountId: number
+  ): Promise<iUpdateAccountResponse> {
     try {
       const accountExist = await this.accountRepository.findOneBy({
-        id_account,
+        id_account: accountId,
       });
 
       if (!accountExist) {
@@ -28,21 +26,23 @@ export class UpdateAccountUseCase {
         };
       }
 
-      const usernameExist = await this.accountRepository.findOneBy({
-        username,
-      });
+      if (username) {
+        const usernameExist = await this.accountRepository.findOneBy({
+          username,
+        });
 
-      if (usernameExist && usernameExist.id_account !== id_account) {
-        return {
-          status: "error",
-          message: "Username already in use. Please use a different one!",
-          code: 409,
-        };
+        if (usernameExist && usernameExist.id_account !== accountId) {
+          return {
+            status: "error",
+            message: "Username already in use. Please use a different one!",
+            code: 409,
+          };
+        }
       }
 
-      accountExist.username = username;
-      accountExist.phone = phone;
-      accountExist.bio = bio;
+      accountExist.username = username ? username : accountExist.username;
+      accountExist.phone = phone ? phone : accountExist.phone;
+      accountExist.bio = bio ? bio : accountExist.bio;
       accountExist.updated_at = new Date();
 
       await this.accountRepository.save(accountExist);
