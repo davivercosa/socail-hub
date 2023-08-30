@@ -17,12 +17,6 @@ export class Account {
   @Column("varchar", { length: 100, nullable: true })
   profile_picture: string;
 
-  @Column("int", { default: 0 })
-  followers: number;
-
-  @Column("int", { default: 0 })
-  following: number;
-
   @Column("tinyint", { default: 0 })
   privacy: number;
 
