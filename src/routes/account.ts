@@ -37,7 +37,7 @@ export default {
       route: "/",
       controller: UpdateAccountController,
       action: "handle",
-      middlewares: [VerifyDTO(updateAccountSchema), Authenticate],
+      middlewares: [Authenticate, VerifyDTO(updateAccountSchema)],
     },
 
     {
@@ -45,7 +45,7 @@ export default {
       route: "/password",
       controller: UpdateAccountPasswordController,
       action: "handle",
-      middlewares: [VerifyDTO(updateAccountPasswordSchema)],
+      middlewares: [Authenticate, VerifyDTO(updateAccountPasswordSchema)],
     },
   ],
 };
