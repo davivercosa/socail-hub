@@ -1,7 +1,7 @@
 import { iApiResponse } from "../../../../shared/interfaces/response.interface";
 
-export interface iAddFollower {
+export interface iAddRemoveFollower {
   account_id: number;
 }
 
-export interface iAddFollowerResponse extends iApiResponse {}
+export interface iAddRemoveFollowerResponse extends iApiResponse {}

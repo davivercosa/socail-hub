@@ -1,7 +1,7 @@
 import Authenticate from "../middlewares/Authenticate";
 import VerifyDTO from "../middlewares/Verify.DTO";
-import { AddFollowerController } from "../modules/follower/add/AddFollowerController";
-import { addFollowerSchema } from "../modules/follower/add/dtos/addFollower.dto";
+import { AddRemoveFollowerController } from "../modules/follower/addRemove/AddRemoveFollowerController";
+import { addRemoveFollowerSchema } from "../modules/follower/addRemove/dtos/addRemoveFollower.dto";
 
 export default {
   path: "/follower",
@@ -9,9 +9,9 @@ export default {
     {
       method: "post",
       route: "/",
-      controller: AddFollowerController,
+      controller: AddRemoveFollowerController,
       action: "handle",
-      middlewares: [Authenticate, VerifyDTO(addFollowerSchema)],
+      middlewares: [Authenticate, VerifyDTO(addRemoveFollowerSchema)],
     },
   ],
 };
