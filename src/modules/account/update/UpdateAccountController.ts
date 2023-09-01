@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
+
+import { UpdateAccountUseCase } from "./UpdateAccountUseCase";
+
 import {
   iUpdateAccount,
   iUpdateAccountResponse,
 } from "./interfaces/updateAccount.interface";
-import { UpdateAccountUseCase } from "./UpdateAccountUseCase";
 
 export class UpdateAccountController {
   async handle(
@@ -12,8 +14,8 @@ export class UpdateAccountController {
   ): Promise<iUpdateAccountResponse> {
     const accountInfo = request.body as iUpdateAccount;
 
-    const userId = request.user.id;
+    const accountId = request.user.id;
 
-    return await new UpdateAccountUseCase().resolve(accountInfo, userId);
+    return await new UpdateAccountUseCase().resolve(accountInfo, accountId);
   }
 }

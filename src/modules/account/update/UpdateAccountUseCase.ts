@@ -1,5 +1,7 @@
 import { AppDataSource } from "../../../data-source";
+
 import { Account } from "../entitities/Account.entity";
+
 import {
   iUpdateAccount,
   iUpdateAccountResponse,
@@ -11,14 +13,14 @@ export class UpdateAccountUseCase {
   ) {}
   async resolve(
     { username, phone, bio }: iUpdateAccount,
-    userId: number
+    accountId: number
   ): Promise<iUpdateAccountResponse> {
     try {
-      const accountExist = await this.accountRepository.findOneBy({
-        id_account: userId,
+      const account = await this.accountRepository.findOneBy({
+        id_account: accountId,
       });
 
-      if (!accountExist) {
+      if (!account) {
         return {
           status: "error",
           message: "Account not found on our database. Please try again!",
@@ -27,11 +29,11 @@ export class UpdateAccountUseCase {
       }
 
       if (username) {
-        const usernameExist = await this.accountRepository.findOneBy({
+        const account = await this.accountRepository.findOneBy({
           username,
         });
 
-        if (usernameExist && usernameExist.id_account !== userId) {
+        if (account && account.id_account !== accountId) {
           return {
             status: "error",
             message: "Username already in use. Please use a different one!",
@@ -40,12 +42,12 @@ export class UpdateAccountUseCase {
         }
       }
 
-      accountExist.username = username ? username : accountExist.username;
-      accountExist.phone = phone ? phone : accountExist.phone;
-      accountExist.bio = bio ? bio : accountExist.bio;
-      accountExist.updated_at = new Date();
+      account.username = username ? username : account.username;
+      account.phone = phone ? phone : account.phone;
+      account.bio = bio ? bio : account.bio;
+      account.updated_at = new Date();
 
-      await this.accountRepository.save(accountExist);
+      await this.accountRepository.save(account);
 
       return {
         status: "success",

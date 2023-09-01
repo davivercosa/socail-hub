@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
+
 import { AddRemoveFollowerUseCase } from "./AddRemoveFollowerUseCase";
+
 import {
   iAddRemoveFollower,
   iAddRemoveFollowerResponse,
@@ -10,13 +12,13 @@ export class AddRemoveFollowerController {
     request: Request,
     response: Response
   ): Promise<iAddRemoveFollowerResponse> {
-    const followedAccountInfo = request.body as iAddRemoveFollower;
+    const followingInfo = request.body as iAddRemoveFollower;
 
-    const followerId = request.user.id;
+    const accountId = request.user.id;
 
     return await new AddRemoveFollowerUseCase().resolve(
-      followedAccountInfo,
-      followerId
+      followingInfo,
+      accountId
     );
   }
 }

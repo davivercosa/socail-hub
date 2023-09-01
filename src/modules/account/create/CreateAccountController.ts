@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
+
 import { CreateAccountUseCase } from "./CreateAccountUseCase";
+
 import {
   iCreateAccount,
   iCreateAccountResponse,

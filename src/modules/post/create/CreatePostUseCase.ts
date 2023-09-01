@@ -1,22 +1,23 @@
-import bcrypt from "bcrypt";
+import { AppDataSource } from "../../../data-source";
 
-import { AppDataSource } from "../../../../data-source";
-
-import { Account } from "../../entitities/Account.entity";
+import { Account } from "../../account/entitities/Account.entity";
+import { Post } from "../entities/Post.entity";
 
 import {
-  iUpdateAccountPassword,
-  iUpdateAccountPasswordResponse,
-} from "./interfaces/updateAccountPassword.interface";
+  iCreatePost,
+  iCreatePostResponse,
+} from "./interfaces/createPost.interface";
 
-export class UpdateAccountPasswordUseCase {
+export class CreatePostUseCase {
   constructor(
+    private postRepository = AppDataSource.getRepository(Post),
     private accountRepository = AppDataSource.getRepository(Account)
   ) {}
+
   async resolve(
-    { password }: iUpdateAccountPassword,
+    { content }: iCreatePost,
     accountId: number
-  ): Promise<iUpdateAccountPasswordResponse> {
+  ): Promise<iCreatePostResponse> {
     try {
       const account = await this.accountRepository.findOneBy({
         id_account: accountId,
@@ -30,16 +31,17 @@ export class UpdateAccountPasswordUseCase {
         };
       }
 
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const post = new Post();
 
-      account.password = hashedPassword;
+      post.account = account;
+      post.content = content;
 
-      await this.accountRepository.save(account);
+      await this.postRepository.insert(post);
 
       return {
         status: "success",
-        message: "Account Password successfully updated!",
-        code: 200,
+        message: "Post successfully created!",
+        code: 201,
       };
     } catch (error) {
       return {

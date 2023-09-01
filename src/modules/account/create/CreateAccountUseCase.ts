@@ -1,11 +1,13 @@
+import bcrypt from "bcrypt";
+
 import { AppDataSource } from "../../../data-source";
+
 import { Account } from "../entitities/Account.entity";
+
 import {
   iCreateAccount,
   iCreateAccountResponse,
 } from "./interfaces/createAccount.interface";
-
-import bcrypt from "bcrypt";
 
 export class CreateAccountUseCase {
   constructor(
@@ -34,14 +36,14 @@ export class CreateAccountUseCase {
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const account = Object.assign(new Account(), {
-        username,
-        password: hashedPassword,
-        bio,
-        phone,
-      });
+      const account = new Account();
 
-      await this.accountRepository.save(account);
+      account.username = username;
+      account.password = hashedPassword;
+      account.bio = bio;
+      account.phone = phone;
+
+      await this.accountRepository.insert(account);
 
       return {
         status: "success",

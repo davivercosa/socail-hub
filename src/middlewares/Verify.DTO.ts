@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import RequestManager from "../utils/RequestManager";
 import { Schema } from "joi";
+
+import RequestManager from "../utils/RequestManager";
 
 export default function (schema: Schema) {
   return async function (

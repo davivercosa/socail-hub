@@ -1,6 +1,8 @@
 import { AppDataSource } from "../../../data-source";
+
 import { Account } from "../../account/entitities/Account.entity";
-import { Follower } from "../entitities/Follower.entity";
+import { FollowerFollowing } from "../entitities/Follower.entity";
+
 import {
   iAddRemoveFollower,
   iAddRemoveFollowerResponse,
@@ -8,24 +10,26 @@ import {
 
 export class AddRemoveFollowerUseCase {
   constructor(
-    private followerRepository = AppDataSource.getRepository(Follower),
+    private followerFollowingRepository = AppDataSource.getRepository(
+      FollowerFollowing
+    ),
     private accountRepository = AppDataSource.getRepository(Account)
   ) {}
 
   async resolve(
-    { account_id }: iAddRemoveFollower,
-    followerId: number
+    { following_id }: iAddRemoveFollower,
+    accountId: number
   ): Promise<iAddRemoveFollowerResponse> {
     try {
-      const followedAccount = await this.accountRepository.findOneBy({
-        id_account: account_id,
+      const following = await this.accountRepository.findOneBy({
+        id_account: following_id,
       });
 
-      const followerAccount = await this.accountRepository.findOneBy({
-        id_account: followerId,
+      const follower = await this.accountRepository.findOneBy({
+        id_account: accountId,
       });
 
-      if (!followedAccount || !followerAccount) {
+      if (!following || !follower) {
         return {
           status: "error",
           message: "Account not found on our database. Please try again!",
@@ -33,18 +37,21 @@ export class AddRemoveFollowerUseCase {
         };
       }
 
-      const follower = new Follower();
+      const followerFollowingRelation = new FollowerFollowing();
 
-      follower.followerAccount = followerAccount;
-      follower.followedAccount = followedAccount;
+      followerFollowingRelation.follower = follower;
+      followerFollowingRelation.following = following;
 
-      const followerFollowsAccount = await this.followerRepository.findOneBy({
-        followerAccount,
-        followedAccount,
-      });
+      const followerFollowsFollowing =
+        await this.followerFollowingRepository.findOneBy({
+          follower,
+          following,
+        });
 
-      if (followerFollowsAccount) {
-        await this.followerRepository.delete(follower);
+      if (followerFollowsFollowing) {
+        await this.followerFollowingRepository.delete(
+          followerFollowingRelation
+        );
 
         return {
           status: "success",
@@ -53,7 +60,7 @@ export class AddRemoveFollowerUseCase {
         };
       }
 
-      await this.followerRepository.save(follower);
+      await this.followerFollowingRepository.insert(followerFollowingRelation);
 
       return {
         status: "success",

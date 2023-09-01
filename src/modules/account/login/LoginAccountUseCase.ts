@@ -1,12 +1,14 @@
+import bcrypt from "bcrypt";
+
 import { AppDataSource } from "../../../data-source";
 import { JwtManager } from "../../../utils/JwtManager";
+
 import { Account } from "../entitities/Account.entity";
+
 import {
   iLoginAccount,
   iLoginAccountResponse,
 } from "./interfaces/loginAccount.interface";
-
-import bcrypt from "bcrypt";
 
 export class LoginAccountUseCase {
   constructor(
@@ -18,11 +20,11 @@ export class LoginAccountUseCase {
     password,
   }: iLoginAccount): Promise<iLoginAccountResponse> {
     try {
-      const accountExist = await this.accountRepository.findOneBy({
+      const account = await this.accountRepository.findOneBy({
         username,
       });
 
-      if (!accountExist) {
+      if (!account) {
         return {
           status: "error",
           message:
@@ -31,10 +33,7 @@ export class LoginAccountUseCase {
         };
       }
 
-      const passwordCorrect = await bcrypt.compare(
-        password,
-        accountExist.password
-      );
+      const passwordCorrect = await bcrypt.compare(password, account.password);
 
       if (!passwordCorrect) {
         return {
@@ -45,7 +44,7 @@ export class LoginAccountUseCase {
         };
       }
 
-      return new JwtManager().create(accountExist);
+      return new JwtManager().create(account);
     } catch (error) {
       return {
         status: "error",

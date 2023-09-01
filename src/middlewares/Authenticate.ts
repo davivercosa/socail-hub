@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+
 import { JwtManager } from "../utils/JwtManager";
 
 export default async function (

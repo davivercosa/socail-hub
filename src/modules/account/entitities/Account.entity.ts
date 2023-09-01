@@ -1,5 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { Follower } from "../../follower/entitities/Follower.entity";
+
+import { FollowerFollowing } from "../../follower/entitities/Follower.entity";
+import { Post } from "../../post/entities/Post.entity";
 
 @Entity()
 export class Account {
@@ -39,9 +41,18 @@ export class Account {
   @Column("tinyint", { default: 0 })
   forgot_password: number;
 
-  @OneToMany(() => Follower, (follower) => follower.followedAccount)
-  followers: Follower[];
+  @OneToMany(() => Post, (post) => post.account)
+  posts: Post[];
 
-  @OneToMany(() => Follower, (follower) => follower.followerAccount)
-  following: Follower[];
+  @OneToMany(
+    () => FollowerFollowing,
+    (followerFollowing) => followerFollowing.follower
+  )
+  followers: FollowerFollowing[];
+
+  @OneToMany(
+    () => FollowerFollowing,
+    (followerFollowing) => followerFollowing.following
+  )
+  following: FollowerFollowing[];
 }

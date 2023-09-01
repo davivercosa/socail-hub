@@ -1,15 +1,17 @@
-import { iApiResponse } from "../shared/interfaces/response.interface";
-import { Account } from "../modules/account/entitities/Account.entity";
 import jwt, { JsonWebTokenError, Secret } from "jsonwebtoken";
+
+import { iApiResponse } from "../shared/interfaces/response.interface";
+
+import { Account } from "../modules/account/entitities/Account.entity";
 
 const secret: Secret = process.env.JWT_SECRET;
 
 export class JwtManager {
-  create(accountInfo: Account): iApiResponse {
+  create(account: Account): iApiResponse {
     try {
       const token = jwt.sign(
         {
-          id: accountInfo.id_account,
+          id: account.id_account,
         },
         secret,
         { expiresIn: "1d" }
