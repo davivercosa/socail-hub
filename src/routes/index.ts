@@ -5,10 +5,11 @@ import { iApiResponse } from "../shared/interfaces/response.interface";
 import AccountRoutes from "./account";
 import FollowerRoutes from "./follower";
 import PostRoutes from "./post";
+import CommentRoutes from "./comment";
 
 const router = Router();
 
-const routes = [AccountRoutes, FollowerRoutes, PostRoutes];
+const routes = [AccountRoutes, FollowerRoutes, PostRoutes, CommentRoutes];
 
 routes.forEach((obj) => {
   obj.routes.forEach((route) => {

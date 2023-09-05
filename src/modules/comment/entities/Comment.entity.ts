@@ -4,18 +4,16 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-  OneToMany,
 } from "typeorm";
-
+import { Post } from "../../post/entities/Post.entity";
 import { Account } from "../../account/entitities/Account.entity";
-import { Comment } from "../../comment/entities/Comment.entity";
 
 @Entity()
-export class Post {
+export class Comment {
   @PrimaryGeneratedColumn()
-  id_post: number;
+  id_comment: number;
 
-  @Column("varchar", { length: 5000, nullable: false })
+  @Column("varchar", { length: 1000, nullable: false })
   content: string;
 
   @Column("datetime", { default: () => "GETDATE()" })
@@ -24,10 +22,11 @@ export class Post {
   @Column("datetime", { nullable: true })
   updated_at: Date;
 
-  @ManyToOne(() => Account)
+  @ManyToOne(() => Post, (post) => post.comments)
+  @JoinColumn({ name: "post_id" })
+  post: Post;
+
+  @ManyToOne(() => Account, (account) => account.comments)
   @JoinColumn({ name: "account_id" })
   account: Account;
-
-  @OneToMany(() => Comment, (comment) => comment.post)
-  comments: Comment[];
 }

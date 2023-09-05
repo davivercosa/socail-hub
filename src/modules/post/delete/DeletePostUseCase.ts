@@ -49,7 +49,7 @@ export class DeletePostUseCase {
       return {
         status: "success",
         message: "Post successfully deleted!",
-        code: 201,
+        code: 200,
       };
     } catch (error) {
       return {

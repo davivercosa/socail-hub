@@ -5,6 +5,7 @@ import { DataSource } from "typeorm";
 import { Account } from "./modules/account/entitities/Account.entity";
 import { FollowerFollowing } from "./modules/follower/entitities/Follower.entity";
 import { Post } from "./modules/post/entities/Post.entity";
+import { Comment } from "./modules/comment/entities/Comment.entity";
 
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -20,7 +21,7 @@ export const AppDataSource = new DataSource({
   database,
   synchronize: true,
   logging: false,
-  entities: [Account, FollowerFollowing, Post],
+  entities: [Account, FollowerFollowing, Post, Comment],
   migrations: [],
   subscribers: [],
   extra: {

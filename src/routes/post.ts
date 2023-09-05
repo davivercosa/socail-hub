@@ -10,6 +10,8 @@ import { updatePostSchema } from "../modules/post/update/dtos/updatePost.dto";
 import { DeletePostController } from "../modules/post/delete/DeletePostController";
 import { deletePostSchema } from "../modules/post/delete/dtos/deletePost.dto";
 
+import { ListPostController } from "../modules/post/list/ListPostController";
+
 export default {
   path: "/post",
   routes: [
@@ -35,6 +37,14 @@ export default {
       controller: DeletePostController,
       action: "handle",
       middlewares: [Authenticate, VerifyDTO(deletePostSchema)],
+    },
+
+    {
+      method: "get",
+      route: "/",
+      controller: ListPostController,
+      action: "handle",
+      middlewares: [Authenticate],
     },
   ],
 };
